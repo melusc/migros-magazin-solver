@@ -1,0 +1,11 @@
+indent-width = 2
+
+[format]
+indent-style = "tab"
+line-ending = "lf"
+
+[lint]
+select = ["I001", "F401"]
+
+[lint.isort]
+combine-as-imports = true
