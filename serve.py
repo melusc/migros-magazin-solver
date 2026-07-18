@@ -25,6 +25,7 @@ def inject_stage_and_region():
 		"Arrow": Arrow,
 		"isinstance": isinstance,
 		"layout_crossword": layout_crossword,
+		"set": set,
 	}
 
 

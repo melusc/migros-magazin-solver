@@ -13,14 +13,18 @@
 		grid-template-rows: repeat({{ height + 2 }}, var(--block-size));
 	">
 		<svg xmlns="http://www.w3.org/2000/svg">{{ arrow_defs() }}</svg>
+		{%- set done = set() -%}
 
 		{%- for item, x, y in items -%}
 			{%- if isinstance(item, str) and len(item) == 1 -%}
-				<div
-					class="text-center align-content-center w-100 h-100 border border-black"
-					style="grid-column: {{ x + 1 }}; grid-row: {{ y + 1 }}; font-size: var(--text-large)">
-					<div>{{ item }}</div>
-				</div>
+				{%- if (x, y) not in done -%}
+					<div
+						class="text-center align-content-center w-100 h-100 border border-black"
+						style="grid-column: {{ x + 1 }}; grid-row: {{ y + 1 }}; font-size: var(--text-large)">
+						<div>{{ item }}</div>
+					</div>
+					{{ done.add((x, y)) or "" }}
+				{%- endif -%}
 			{%- elif isinstance(item, str) -%}
 				<div
 					class="align-content-center w-100 h-100 p-1 border border-black fw-bold"
