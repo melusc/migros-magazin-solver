@@ -27,8 +27,8 @@
 				{%- endif -%}
 			{%- elif isinstance(item, str) -%}
 				<div
-					class="align-content-center w-100 h-100 p-1 border border-black fw-bold"
-					style="grid-column: {{ x + 1 }}; grid-row: {{ y + 1 }}; font-size: var(--text-small)">
+					class="align-content-center w-100 h-100 border border-black fw-bold"
+					style="grid-column: {{ x + 1 }}; grid-row: {{ y + 1 }}; font-size: var(--text-small); padding: var(--space-small)">
 					{%- for line in item.split("+") -%}
 						<div>{{ line }}</div>
 					{%- endfor -%}
@@ -46,8 +46,7 @@
 				<div>{{ field.position }}</div>
 			</div>
 			<div
-				class="p-1"
-				style="grid-column: {{ field.x + 1}}; grid-row: {{ field.y + 1 }}; font-size: var(--text-med)">
+				style="grid-column: {{ field.x + 1}}; grid-row: {{ field.y + 1 }}; font-size: var(--text-med); padding: var(--space-small)">
 				<div class="border rounded-circle border-black border-1 h-100"></div>
 			</div>
 			<div

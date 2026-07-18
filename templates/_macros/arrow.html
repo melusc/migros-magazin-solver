@@ -45,7 +45,7 @@
     {%- set ns.id = "arrow-below-down" -%}
   {% endif %}
 
-  <div style="grid-column: {{ x + 1 }}; grid-row: {{ y + 1}}">
+  <div class="d-flex" style="grid-column: {{ x + 1 }}; grid-row: {{ y + 1}}">
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><use href="#{{ ns.id }}" x="0" y="0" /></svg>
   </div>
 {%- endmacro -%}
