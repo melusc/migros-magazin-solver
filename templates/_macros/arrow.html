@@ -1,0 +1,51 @@
+{%- macro arrow_defs() -%}
+  <svg xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <symbol id="arrow-below-across">
+        <path stroke-width="2.035" d="M1.15 0v9.533l1.658-.767L4.466 8l-1.658-.766-1.358-.628V0Z" />
+      </symbol>
+
+      <symbol id="arrow-above-across">
+        <path stroke-width="2.035" d="M1.15 6.467V16h.3V9.394l1.358-.628L4.466 8l-1.658-.766Z" />
+      </symbol>
+
+      <symbol id="arrow-right-across">
+        <path stroke-width="1.653" d="M0 6.467v3.066l1.658-.767L3.316 8l-1.658-.766Z" />
+      </symbol>
+
+      <symbol id="arrow-right-down">
+        <path stroke-width="2.035" d="M0 1.15v.3h6.606l.628 1.358L8 4.466l.766-1.658.767-1.658H6.468Z" />
+      </symbol>
+
+      <symbol id="arrow-left-down">
+        <path stroke-width="2.035" d="m6.468 1.15.766 1.658L8 4.466l.766-1.658.628-1.358H16v-.3H8z" />
+      </symbol>
+
+      <symbol id="arrow-below-down">
+        <path stroke-width="1.653" d="m6.467 0 .767 1.658L8 3.316l.766-1.658L9.533 0H8z" />
+      </symbol>
+    </defs>
+  </svg>
+{%- endmacro -%}
+
+{%- macro arrow(direction, x, y) -%}
+  {%- set ns = namespace(id=None) -%}
+
+  {% if direction == Arrow.BELOW_ACROSS %}
+    {%- set ns.id = "arrow-below-across" -%}
+  {% elif direction == Arrow.ABOVE_ACROSS %}
+    {%- set ns.id = "arrow-above-across" -%}
+  {% elif direction == Arrow.RIGHT_ACROSS %}
+    {%- set ns.id = "arrow-right-across" -%}
+  {% elif direction == Arrow.RIGHT_DOWN %}
+    {%- set ns.id = "arrow-right-down" -%}
+  {% elif direction == Arrow.LEFT_DOWN %}
+    {%- set ns.id = "arrow-left-down" -%}
+  {% elif direction == Arrow.BELOW_DOWN %}
+    {%- set ns.id = "arrow-below-down" -%}
+  {% endif %}
+
+  <div style="grid-column: {{ x + 1 }}; grid-row: {{ y + 1}}">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><use href="#{{ ns.id }}" x="0" y="0" /></svg>
+  </div>
+{%- endmacro -%}

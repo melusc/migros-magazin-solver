@@ -4,6 +4,7 @@ from flask import Flask, g, render_template
 from jinja2 import StrictUndefined
 
 import config
+from scrapers.crossword import Arrow, fetch_crossword, layout_crossword
 
 app = Flask(__name__)
 app.config.from_prefixed_env()
@@ -19,9 +20,11 @@ def set_nonce():
 def inject_stage_and_region():
 	return {
 		"str": str,
-		"list": list,
+		"len": len,
 		"nonce": g.nonce,
-		"csrf": "csrf",
+		"Arrow": Arrow,
+		"isinstance": isinstance,
+		"layout_crossword": layout_crossword,
 	}
 
 
@@ -32,6 +35,7 @@ def set_headers(response):
 			"default-src 'none'",
 			f"script-src 'nonce-{g.nonce}'",
 			f"style-src-elem 'nonce-{g.nonce}' cdn.jsdelivr.net",
+			"style-src-attr 'unsafe-inline'",
 			"img-src data:",
 			"font-src cdn.jsdelivr.net",
 			"connect-src 'self'",
@@ -43,7 +47,9 @@ def set_headers(response):
 
 @app.route("/", methods=["GET"])
 def index():
-	return render_template("index.html")
+	crosswords = fetch_crossword()
+
+	return render_template("index.html", crosswords=crosswords)
 
 
 if __name__ == "__main__":

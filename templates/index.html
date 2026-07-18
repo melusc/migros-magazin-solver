@@ -1,11 +1,9 @@
-<!doctype html>
-<html lang="en">
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>Migros Magazin Solver</title>
-	</head>
-	<body>
-		<div>It works</div>
-	</body>
-</html>
+{%- extends 'base.html' -%}
+{%- from "_macros/crossword.html" import crossword with context -%}
+
+{%- block content -%}
+	{%- for crossword_ in crosswords -%}
+		{%- set puzzle, width, height = layout_crossword(crossword_) -%}
+		{{ crossword(crossword_, puzzle, width, height) }}
+	{%- endfor -%}
+{%- endblock -%}

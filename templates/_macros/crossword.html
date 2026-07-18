@@ -1,0 +1,62 @@
+{%- from "_macros/arrow.html" import arrow, arrow_defs with context -%}
+
+{%- macro crossword(crossword, items, width, height) -%}
+	{%- set block_size = "calc(80vw / " + str(width) + ")" -%}
+	<div class="d-grid user-select-none" style="
+		--block-size: calc(80vw / {{ width }});
+		--text-large: calc(var(--block-size) / 3);
+		--text-small: calc(var(--block-size) / 6.5);
+		--text-med: calc(var(--block-size) / 5);
+		--space-small: calc(var(--block-size) / 24);
+		--space-med: calc(var(--block-size) / 12);
+		grid-template-columns: repeat({{ width }}, var(--block-size));
+		grid-template-rows: repeat({{ height + 2 }}, var(--block-size));
+	">
+		<svg xmlns="http://www.w3.org/2000/svg">{{ arrow_defs() }}</svg>
+
+		{%- for item, x, y in items -%}
+			{%- if isinstance(item, str) and len(item) == 1 -%}
+				<div
+					class="text-center align-content-center w-100 h-100 border border-black"
+					style="grid-column: {{ x + 1 }}; grid-row: {{ y + 1 }}; font-size: var(--text-large)">
+					<div>{{ item }}</div>
+				</div>
+			{%- elif isinstance(item, str) -%}
+				<div
+					class="align-content-center w-100 h-100 p-1 border border-black fw-bold"
+					style="grid-column: {{ x + 1 }}; grid-row: {{ y + 1 }}; font-size: var(--text-small)">
+					{%- for line in item.split("+") -%}
+						<div>{{ line }}</div>
+					{%- endfor -%}
+				</div>
+			{%- else -%}
+				{{ arrow(item, x, y) }}
+			{%- endif -%}
+		{%- endfor -%}
+
+		{%- for field in crossword.winning_word_fields -%}
+			<div class="fw-bolder"
+				style="
+					grid-column: {{ field.position }}; grid-row: {{ height + 2 }}; font-size: var(--text-med);
+					padding-left: var(--space-med)">
+				<div>{{ field.position }}</div>
+			</div>
+			<div
+				class="p-1"
+				style="grid-column: {{ field.x + 1}}; grid-row: {{ field.y + 1 }}; font-size: var(--text-med)">
+				<div class="border rounded-circle border-black border-1 h-100"></div>
+			</div>
+			<div
+				class="h-100 d-flex justify-content-end align-items-end"
+				style="grid-column: {{ field.x + 1}}; grid-row: {{ field.y + 1 }}; font-size: var(--text-med);
+					padding-right: var(--space-med); padding-bottom: var(--space-med);">
+				<div class="bg-white">{{ field.position }}</div>
+			</div>
+			<div
+				class="text-center align-content-center w-100 h-100 border border-black border-3"
+				style="grid-column: {{ field.position }}; grid-row: {{ height + 2 }}; font-size: var(--text-large)">
+				<div>{{ field.character }}</div>
+			</div>
+		{%- endfor -%}
+	</div>
+{%- endmacro -%}
