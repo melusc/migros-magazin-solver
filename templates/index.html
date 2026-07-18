@@ -2,6 +2,9 @@
 {%- from "_macros/crossword.html" import crossword with context -%}
 
 {%- block content -%}
+	<h1>Migros Magazin Solver</h1>
+
+	<h2>Crossword</h2>
 	{%- for crossword_ in crosswords -%}
 		{%- set puzzle, width, height = layout_crossword(crossword_) -%}
 		{{ crossword(crossword_, puzzle, width, height) }}
