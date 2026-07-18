@@ -9,36 +9,6 @@ from scrapers.util import get
 _BASE = "https://comhouse.ch/mmagazin/raetsel/schwedenraetsel"
 
 
-@functools.cache
-def _fetch_comhouse_page():
-	return get(f"{_BASE}/index.php")
-
-
-_extract_puzzles_array_re = re.compile(
-	r"""
-	var\s+puzzles\s*=\s*(?P<array>\[   # var puzzles = [
-		(?:\s*"[^"]+"\s*,\s*)*           # any string with trailing comma
-		(?:\s*"[^"]+"\s*)?               # final string with absent trailing comma
-	\])\s*;
-""",
-	re.VERBOSE | re.IGNORECASE,
-)
-
-
-def _extract_puzzles_array(page: str) -> list[str]:
-	match = re.search(_extract_puzzles_array_re, page)
-	if not match:
-		raise Exception("Could not parse page.")
-
-	array_raw = match.group("array")
-	return json.loads(array_raw)
-
-
-@functools.cache
-def _fetch_puzzle_fcs(name: str):
-	return get(f"{_BASE}/puzzles/{name}")
-
-
 @dataclasses.dataclass(frozen=True, kw_only=True)
 class Clue:
 	x: int
@@ -70,6 +40,36 @@ class Crossword:
 	clues: list[Clue]
 	winning_word: str
 	winning_word_fields: list[WinningWordField]
+
+
+@functools.cache
+def _fetch_comhouse_page():
+	return get(f"{_BASE}/index.php")
+
+
+_extract_puzzles_array_re = re.compile(
+	r"""
+	var\s+puzzles\s*=\s*(?P<array>\[   # var puzzles = [
+		(?:\s*"[^"]+"\s*,\s*)*           # any string with trailing comma
+		(?:\s*"[^"]+"\s*)?               # final string with absent trailing comma
+	\])\s*;
+""",
+	re.VERBOSE | re.IGNORECASE,
+)
+
+
+def _extract_puzzles_array(page: str) -> list[str]:
+	match = re.search(_extract_puzzles_array_re, page)
+	if not match:
+		raise Exception("Could not parse page.")
+
+	array_raw = match.group("array")
+	return json.loads(array_raw)
+
+
+@functools.cache
+def _fetch_puzzle_fcs(name: str):
+	return get(f"{_BASE}/puzzles/{name}")
 
 
 def _parse_fcs(content: str) -> Crossword:
