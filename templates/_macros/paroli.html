@@ -79,7 +79,8 @@
 							<div class="bg-white p-1 pb-0">{{ field.solution_position }}</div>
 						</div>
 						<div
-							class="text-center align-content-center h-100 border border-black border-3"
+							class="text-center align-content-center h-100
+								border border-black border-3 {{ "border-start-0" if field.solution_position > 1 }}"
 							style="
 								grid-column: {{ field.solution_position }};
 								grid-row: {{ paroli.matrix_height + 2 }};
