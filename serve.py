@@ -5,7 +5,8 @@ from jinja2 import StrictUndefined
 
 import config
 from scrapers.crossword import Arrow, fetch_crossword, layout_crossword
-from scrapers.paroli import MatrixFieldType, fetch_and_solve
+from scrapers.paroli import MatrixFieldType, fetch_and_solve_paroli
+from scrapers.sudoku import SudokuBorder, fetch_and_parse_sudoku
 
 app = Flask(__name__)
 app.config.from_prefixed_env()
@@ -29,6 +30,7 @@ def inject_stage_and_region():
 		"layout_crossword": layout_crossword,
 		"set": set,
 		"MatrixFieldType": MatrixFieldType,
+		"SudokuBorder": SudokuBorder,
 	}
 
 
@@ -61,9 +63,16 @@ def index():
 	could_solve = False
 
 	try:
-		paroli, could_solve = fetch_and_solve()
+		paroli, could_solve = fetch_and_solve_paroli()
 	except Exception as e:
 		paroli_exception = e
+
+	sudoku = None
+	sudoku_exception = None
+	try:
+		sudoku = fetch_and_parse_sudoku()
+	except Exception as e:
+		sudoku_exception = e
 
 	return render_template(
 		"index.html",
@@ -72,6 +81,8 @@ def index():
 		paroli=paroli,
 		paroli_solved=could_solve,
 		paroli_exception=paroli_exception,
+		sudoku=sudoku,
+		sudoku_exception=sudoku_exception,
 	)
 
 

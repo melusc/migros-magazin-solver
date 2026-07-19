@@ -1,6 +1,6 @@
 import ast
-from typing import Any
 import re
+from typing import Any
 
 
 def extract_variable(script: str, variable: str) -> Any:

@@ -1,10 +1,9 @@
-from scrapers.parse_js import extract_variable
-import ast
 import dataclasses
 import re
 from enum import Enum
 from typing import Any, cast
 
+from scrapers.parse_js import extract_variable
 from scrapers.util import get, memoise
 
 _BASE = "https://comhouse.ch/mmagazin/raetsel/paroli/PA_DE"
@@ -364,7 +363,7 @@ def fetch_and_parse() -> ParoliGame:
 	return _coerce_ww_game(ww_game_object)
 
 
-def fetch_and_solve() -> tuple[ParoliGame, bool]:
+def fetch_and_solve_paroli() -> tuple[ParoliGame, bool]:
 	paroli = fetch_and_parse()
 	could_solve = solve_paroli(paroli)
 
@@ -372,7 +371,7 @@ def fetch_and_solve() -> tuple[ParoliGame, bool]:
 
 
 if __name__ == "__main__":
-	paroli, could_solve = fetch_and_solve()
+	paroli, could_solve = fetch_and_solve_paroli()
 
 	if could_solve:
 		print("Solved\n")
@@ -385,4 +384,4 @@ if __name__ == "__main__":
 		print("Could not solve")
 		print(paroli)
 
-__all__ = ("ParoliGame", "fetch_and_solve", "MatrixFieldType")
+__all__ = ("ParoliGame", "fetch_and_solve_paroli", "MatrixFieldType")
