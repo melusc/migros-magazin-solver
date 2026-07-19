@@ -1,21 +1,27 @@
 {%- macro sudoku_grid(sudoku) -%}
-	<div class="d-grid user-select-none" style="
-		--block-size: calc(50vmax / {{ sudoku.dim_x }});
-		--text-large: calc(var(--block-size) / 3);
-		grid-template-columns: repeat({{ sudoku.dim_x }}, var(--block-size));
-		grid-template-rows: repeat({{ sudoku.dim_y }}, var(--block-size));
-		font-size: var(--text-large);
-	">
+	<div
+		class="d-grid user-select-none"
+		style="
+			--block-size: calc(50vmax / {{ sudoku.dim_x }});
+			--text-large: calc(var(--block-size) / 3);
+			grid-template-columns: repeat({{ sudoku.dim_x }}, var(--block-size));
+			grid-template-rows: repeat({{ sudoku.dim_y }}, var(--block-size));
+			font-size: var(--text-large);
+		"
+	>
 		{%- for row in sudoku.cells -%}
 			{%- for cell in row -%}
 				<div
-					class="align-content-center text-center border
-						{{ 'bg-success text-white' if cell.is_winning_field }}"
-					style="{{ 'border-bottom: 3px solid black !important;' if SudokuBorder.Bottom in cell.thick_borders }}
+					class="align-content-center text-center border {{ 'bg-success text-white' if cell.is_winning_field }}"
+					style="
+						{{ 'border-bottom: 3px solid black !important;' if SudokuBorder.Bottom in cell.thick_borders }}
 						{{ 'border-top: 3px solid black !important;' if SudokuBorder.Top in cell.thick_borders }}
 						{{ 'border-left: 3px solid black !important;' if SudokuBorder.Left in cell.thick_borders }}
-						{{ 'border-right: 3px solid black !important;' if SudokuBorder.Right in cell.thick_borders }}"
-				>{{ cell.value }}</div>
+						{{ 'border-right: 3px solid black !important;' if SudokuBorder.Right in cell.thick_borders }}
+					"
+				>
+					{{ cell.value }}
+				</div>
 			{%- endfor -%}
 		{%- endfor -%}
 	</div>
