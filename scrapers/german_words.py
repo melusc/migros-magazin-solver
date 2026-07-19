@@ -21,9 +21,13 @@ def _get_words() -> Iterator[str]:
 			yield word
 
 
+_wordlist_directory = Path(__file__).parent.parent / ".wordlists-german"
+
 @functools.cache
 def get_words_of_length(length: int) -> list[str]:
-	wordlist = Path(__file__).parent.parent / f"wordlist-german-{length}.txt"
+	_wordlist_directory.mkdir(exist_ok=True)
+
+	wordlist = _wordlist_directory / f"{length}.txt"
 
 	if wordlist.exists():
 		with wordlist.open() as f:
