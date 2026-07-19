@@ -194,6 +194,10 @@ dependencies = [
     { name = "jinja2" },
     { name = "python-dotenv" },
     { name = "requests" },
+]
+
+[package.dev-dependencies]
+dev = [
     { name = "ruff" },
     { name = "ty" },
 ]
@@ -206,6 +210,10 @@ requires-dist = [
     { name = "jinja2", specifier = ">=3.1.6" },
     { name = "python-dotenv", specifier = ">=1.2.2" },
     { name = "requests", specifier = ">=2.34.2" },
+]
+
+[package.metadata.requires-dev]
+dev = [
     { name = "ruff", specifier = ">=0.15.21" },
     { name = "ty", specifier = ">=0.0.58" },
 ]
