@@ -1,5 +1,7 @@
+import functools
 from collections.abc import Callable
 from time import monotonic
+from typing import ParamSpec, TypeVar
 
 import requests
 
@@ -22,18 +24,37 @@ def get(url: str) -> str:
 	).text
 
 
-class Memoize:
-	def __init__(self, f: Callable):
-		self.f = f
-		self.memo = None
-		self.memo_time = 0
-
-	def __call__(self):
-		if not self.memo or self.memo_time - monotonic() > 300:
-			self.memo = self.f()
-			self.memo_time = monotonic()
-
-		return self.memo
+P = ParamSpec("P")
+# TypeVar captures the return type
+R = TypeVar("R")
 
 
-__all__ = ("get",)
+def memoise(*, ttl: int) -> Callable[[Callable[P, R]], Callable[P, R]]:
+	def decorator(f: Callable[P, R]) -> Callable[P, R]:
+		memo: R | None = None
+		memo_time = 0
+		last_args = ()
+		last_kwargs = {}
+
+		@functools.wraps(f)
+		def wrapper(*args: P.args, **kwargs: P.kwargs) -> R:
+			nonlocal memo, memo_time, last_args, last_kwargs
+
+			now = monotonic()
+
+			if (
+				not memo or now - memo_time > ttl or args != last_args or kwargs != last_kwargs
+			):
+				memo = f(*args, **kwargs)
+				memo_time = now
+				last_args = args
+				last_kwargs = kwargs
+
+			return memo
+
+		return wrapper
+
+	return decorator
+
+
+__all__ = ("get", "memoise")

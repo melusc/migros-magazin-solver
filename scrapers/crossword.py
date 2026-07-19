@@ -1,10 +1,9 @@
 import dataclasses
-import functools
 import json
 import re
 from enum import Enum
 
-from scrapers.util import get
+from scrapers.util import get, memoise
 
 _BASE = "https://comhouse.ch/mmagazin/raetsel/schwedenraetsel"
 
@@ -42,7 +41,7 @@ class Crossword:
 	winning_word_fields: list[WinningWordField]
 
 
-@functools.cache
+@memoise(ttl=1200)
 def _fetch_comhouse_page():
 	return get(f"{_BASE}/index.php")
 
@@ -67,7 +66,7 @@ def _extract_puzzles_array(page: str) -> list[str]:
 	return json.loads(array_raw)
 
 
-@functools.cache
+@memoise(ttl=1200)
 def _fetch_puzzle_fcs(name: str):
 	return get(f"{_BASE}/puzzles/{name}")
 
@@ -181,6 +180,7 @@ def fetch_crossword() -> list[Crossword]:
 if __name__ == "__main__":
 	for puzzle in fetch_crossword():
 		print(puzzle)
+
 
 __all__ = (
 	"Crossword",
