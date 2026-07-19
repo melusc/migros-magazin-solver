@@ -39,7 +39,7 @@ def set_headers(response):
 			"default-src 'none'",
 			f"style-src-elem 'nonce-{g.nonce}' cdn.jsdelivr.net",
 			"style-src-attr 'unsafe-inline'",
-			"img-src data:"
+			"img-src data:",
 		),
 	)
 	del response.headers["Server"]
@@ -48,11 +48,30 @@ def set_headers(response):
 
 @app.route("/", methods=["GET"])
 def index():
-	crosswords = fetch_crossword()
-	paroli, could_solve = fetch_and_solve()
+	crosswords = None
+	crossword_exception = None
+
+	try:
+		crosswords = fetch_crossword()
+	except Exception as e:
+		crossword_exception = e
+
+	paroli = None
+	paroli_exception = None
+	could_solve = False
+
+	try:
+		paroli, could_solve = fetch_and_solve()
+	except Exception as e:
+		paroli_exception = e
 
 	return render_template(
-		"index.html", crosswords=crosswords, paroli=paroli, paroli_solved=could_solve
+		"index.html",
+		crosswords=crosswords,
+		crossword_exception=crossword_exception,
+		paroli=paroli,
+		paroli_solved=could_solve,
+		paroli_exception=paroli_exception,
 	)
 
 
