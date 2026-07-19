@@ -39,9 +39,11 @@
 		<main class="p-4">
 			<h1>Migros Magazin Solver</h1>
 
-			<a rel="noreferer" href="https://github.com/melusc/migros-magazin-solver">View Source Code</a>
+			<a rel="noreferrer" href="https://github.com/melusc/migros-magazin-solver">View Source Code</a>
 
-			<h2>Crossword</h2>
+			<h2>
+				<a rel="noreferrer nofollow" href="https://magazine.migros.ch/de/kreuzwortraetsel.html">Crossword</a>
+			</h2>
 			{%- if crossword_exception -%}
 				{{ crossword_exception }}
 			{%- else -%}
@@ -51,7 +53,9 @@
 				{%- endfor -%}
 			{%- endif -%}
 
-			<h2 class="mt-4">Paroli</h2>
+			<h2 class="mt-4">
+				<a rel="noreferrer nofollow" href="https://magazine.migros.ch/de/paroli.html">Paroli</a>
+			</h2>
 			{%- if paroli_exception -%}
 				{{ paroli_exception }}
 			{%- else -%}
@@ -62,14 +66,18 @@
 				{%- endif -%}
 			{%- endif -%}
 
-			<h2 class="mt-4">Sudoku</h2>
+			<h2 class="mt-4">
+				<a rel="noreferrer nofollow" href="https://magazine.migros.ch/de/sudoku.html">Sudoku</a>
+			</h2>
 			{%- if sudoku_exception -%}
 				{{ sudoku_exception }}
 			{%- else -%}
 				{{ sudoku_grid(sudoku) }}
 			{%- endif -%}
 
-			<h2 class="mt-4">Quiz</h2>
+			<h2 class="mt-4">
+				<a rel="noreferrer nofollow" href="https://magazine.migros.ch/de/quiz.html">Quiz</a>
+			</h2>
 			{%- if quiz_exception -%}
 				{{ quiz_exception }}
 			{%- else -%}
