@@ -11,7 +11,7 @@
 		grid-template-columns: repeat({{ width }}, var(--block-size));
 		grid-template-rows: repeat({{ height + 2 }}, var(--block-size));
 	">
-		<svg xmlns="http://www.w3.org/2000/svg">{{ arrow_defs() }}</svg>
+		{{ arrow_defs() }}
 		{%- set done = set() -%}
 
 		{%- for item, x, y in items -%}
@@ -20,7 +20,7 @@
 					<div
 						class="text-center align-content-center h-100 border border-black"
 						style="grid-column: {{ x + 1 }}; grid-row: {{ y + 1 }}; font-size: var(--text-large)">
-						<div>{{ item }}</div>
+						{{ item }}
 					</div>
 					{{ done.add((x, y)) or "" }}
 				{%- endif -%}
@@ -42,7 +42,7 @@
 				style="
 					grid-column: {{ field.position }}; grid-row: {{ height + 2 }}; font-size: var(--text-med);
 					padding-left: var(--space-med)">
-				<div>{{ field.position }}</div>
+				{{ field.position }}
 			</div>
 			<div
 				style="grid-column: {{ field.x + 1}}; grid-row: {{ field.y + 1 }}; font-size: var(--text-med); padding: var(--space-small)">
@@ -55,9 +55,9 @@
 				<div class="bg-white">{{ field.position }}</div>
 			</div>
 			<div
-				class="text-center align-content-center w-100 h-100 border border-black border-3"
+				class="text-center align-content-center h-100 border border-black border-3"
 				style="grid-column: {{ field.position }}; grid-row: {{ height + 2 }}; font-size: var(--text-large)">
-				<div>{{ field.character }}</div>
+				{{ field.character }}
 			</div>
 		{%- endfor -%}
 	</div>

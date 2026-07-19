@@ -13,7 +13,7 @@
 			{%- for field in row -%}
 				{%- if field.type == MatrixFieldType.Regular -%}
 					<div
-						class="border border-1 border-black text-center align-content-center w-100 h-100"
+						class="border border-1 border-black text-center align-content-center h-100"
 						style="grid-column: {{ field.x + 1 }}; grid-row: {{ field.y + 1 }};
 						font-size: var(--text-large)">{{ field.value }}</div>
 
@@ -22,7 +22,7 @@
 							style="
 								grid-column: {{ field.solution_position }}; grid-row: {{ paroli.matrix_height + 2 }}; font-size: var(--text-med);
 								padding-left: var(--space-med)">
-							<div>{{ field.solution_position }}</div>
+							{{ field.solution_position }}
 						</div>
 						<div
 							style="grid-column: {{ field.x + 1 }}; grid-row: {{ field.y + 1 }}; font-size: var(--text-med); padding: var(--space-small)">
@@ -35,9 +35,9 @@
 							<div class="bg-white">{{ field.solution_position }}</div>
 						</div>
 						<div
-							class="text-center align-content-center w-100 h-100 border border-black border-3"
+							class="text-center align-content-center h-100 border border-black border-3"
 							style="grid-column: {{ field.solution_position }}; grid-row: {{ paroli.matrix_height + 2 }}; font-size: var(--text-large)">
-							<div>{{ field.value }}</div>
+							{{ field.value }}
 						</div>
 					{%- endif -%}
 				{%- endif -%}
