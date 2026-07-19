@@ -17,7 +17,11 @@
 				{%- if field.type == MatrixFieldType.Regular -%}
 					<div
 						class="border border-1 border-black text-center align-content-center h-100"
-						style="grid-column: {{ field.x + 1 }}; grid-row: {{ field.y + 1 }}; font-size: var(--text-large)"
+						style="
+							grid-column: {{ field.x + 1 }};
+							grid-row: {{ field.y + 1 }};
+							font-size: var(--text-large);
+						"
 					>
 						{{ field.value }}
 					</div>

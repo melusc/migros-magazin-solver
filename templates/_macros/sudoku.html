@@ -12,12 +12,12 @@
 		{%- for row in sudoku.cells -%}
 			{%- for cell in row -%}
 				<div
-					class="align-content-center text-center border {{ 'bg-success text-white' if cell.is_winning_field }}"
+					class="align-content-center text-center border {{ "bg-success text-white" if cell.is_winning_field }}"
 					style="
-						{{ 'border-bottom: 3px solid black !important;' if SudokuBorder.Bottom in cell.thick_borders }}
-						{{ 'border-top: 3px solid black !important;' if SudokuBorder.Top in cell.thick_borders }}
-						{{ 'border-left: 3px solid black !important;' if SudokuBorder.Left in cell.thick_borders }}
-						{{ 'border-right: 3px solid black !important;' if SudokuBorder.Right in cell.thick_borders }}
+						{{ "border-bottom: 3px solid black !important;" if SudokuBorder.Bottom in cell.thick_borders }}
+						{{ "border-top: 3px solid black !important;" if SudokuBorder.Top in cell.thick_borders }}
+						{{ "border-left: 3px solid black !important;" if SudokuBorder.Left in cell.thick_borders }}
+						{{ "border-right: 3px solid black !important;" if SudokuBorder.Right in cell.thick_borders }}
 					"
 				>
 					{{ cell.value }}
