@@ -147,8 +147,8 @@ def _parse_fcs(content: str) -> Crossword:
 
 def layout_crossword(
 	crossword: Crossword,
-) -> tuple[list[tuple[(str | Arrow), int, int]], int, int]:
-	items: list[tuple[str | Arrow, int, int]] = []
+) -> tuple[set[tuple[(str | Arrow), int, int]], int, int]:
+	items: set[tuple[str | Arrow, int, int]] = set()
 
 	for clue in crossword.clues:
 		dir_y = (
@@ -162,7 +162,7 @@ def layout_crossword(
 		x = clue.x
 		y = clue.y
 
-		items.append((clue.clue, x, y))
+		items.add((clue.clue, x, y))
 
 		if clue.arrow == Arrow.LEFT_DOWN:
 			x -= 1
@@ -173,10 +173,10 @@ def layout_crossword(
 		else:
 			y += 1
 
-		items.append((clue.arrow, x, y))
+		items.add((clue.arrow, x, y))
 
 		for c in clue.answer:
-			items.append((c, x, y))
+			items.add((c, x, y))
 			x += dir_x
 			y += dir_y
 

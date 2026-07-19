@@ -39,6 +39,7 @@ def _get_words() -> Iterator[str]:
 
 _wordlist_directory = Path(__file__).parent.parent / ".wordlists-german"
 
+
 @functools.cache
 def get_words_of_length(length: int) -> list[str]:
 	_wordlist_directory.mkdir(exist_ok=True)

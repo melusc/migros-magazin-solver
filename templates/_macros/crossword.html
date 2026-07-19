@@ -33,19 +33,15 @@
 		"
 	>
 		{{ arrow_defs() }}
-		{%- set done = set() -%}
 
 		{%- for item, x, y in items -%}
 			{%- if isinstance(item, str) and len(item) == 1 -%}
-				{%- if (x, y) not in done -%}
-					<div
-						class="text-center align-content-center h-100 border border-black"
-						style="grid-column: {{ x + 1 }}; grid-row: {{ y + 1 }}; font-size: var(--text-large)"
-					>
-						{{ item }}
-					</div>
-					{{ done.add((x, y)) or "" }}
-				{%- endif -%}
+				<div
+					class="text-center align-content-center h-100 border border-black"
+					style="grid-column: {{ x + 1 }}; grid-row: {{ y + 1 }}; font-size: var(--text-large)"
+				>
+					{{ item }}
+				</div>
 			{%- elif isinstance(item, str) -%}
 				<div
 					class="align-content-center h-100 border border-black fw-bold"
