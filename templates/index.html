@@ -1,6 +1,7 @@
 {%- from "_macros/crossword.html" import crossword with context -%}
 {%- from "_macros/paroli.html" import paroli_grid with context -%}
 {%- from "_macros/sudoku.html" import sudoku_grid with context -%}
+{%- from "_macros/quiz.html" import quiz_grid with context -%}
 
 <!doctype html>
 <html lang="en">
@@ -47,6 +48,15 @@
 			{%- else -%}
 				{{ sudoku_grid(sudoku) }}
 			{%- endif -%}
-			</main>
+
+			<h2 class="mt-4">Quiz</h2>
+			{%- if quiz_exception -%}
+				{{ quiz_exception }}
+			{%- else -%}
+				{%- for word in quiz_answers -%}
+					{{ quiz_grid(word, quiz_questions) }}
+				{%- endfor -%}
+			{%- endif -%}
+		</main>
 	</body>
 </html>

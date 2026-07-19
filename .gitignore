@@ -1,4 +1,5 @@
 *.service
+wordlist-german-*.txt
 
 # Python-generated files
 __pycache__/
