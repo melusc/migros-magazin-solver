@@ -37,12 +37,9 @@ def set_headers(response):
 	response.headers["Content-Security-Policy"] = "; ".join(
 		(
 			"default-src 'none'",
-			f"script-src 'nonce-{g.nonce}'",
 			f"style-src-elem 'nonce-{g.nonce}' cdn.jsdelivr.net",
 			"style-src-attr 'unsafe-inline'",
-			"img-src data:",
-			"font-src cdn.jsdelivr.net",
-			"connect-src 'self'",
+			"img-src data:"
 		),
 	)
 	del response.headers["Server"]
