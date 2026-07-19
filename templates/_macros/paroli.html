@@ -1,0 +1,47 @@
+{%- macro paroli_grid(paroli) -%}
+	<div class="d-grid user-select-none" style="
+		--block-size: calc(50vmax / {{ paroli.matrix_width }});
+		--text-large: calc(var(--block-size) / 3);
+		--text-small: calc(var(--block-size) / 6.5);
+		--text-med: calc(var(--block-size) / 5);
+		--space-small: calc(var(--block-size) / 24);
+		--space-med: calc(var(--block-size) / 12);
+		grid-template-columns: repeat({{ paroli.matrix_width }}, var(--block-size));
+		grid-template-rows: repeat({{ paroli.matrix_height + 2 }}, var(--block-size));
+	">
+		{%- for row in paroli.matrix -%}
+			{%- for field in row -%}
+				{%- if field.type == MatrixFieldType.Regular -%}
+					<div
+						class="border border-1 border-black text-center align-content-center w-100 h-100"
+						style="grid-column: {{ field.x + 1 }}; grid-row: {{ field.y + 1 }};
+						font-size: var(--text-large)">{{ field.value }}</div>
+
+					{%- if isinstance(field.solution_position, int) -%}
+						<div class="fw-bolder"
+							style="
+								grid-column: {{ field.solution_position }}; grid-row: {{ paroli.matrix_height + 2 }}; font-size: var(--text-med);
+								padding-left: var(--space-med)">
+							<div>{{ field.solution_position }}</div>
+						</div>
+						<div
+							style="grid-column: {{ field.x + 1 }}; grid-row: {{ field.y + 1 }}; font-size: var(--text-med); padding: var(--space-small)">
+							<div class="border rounded-circle border-black border-1 h-100"></div>
+						</div>
+						<div
+							class="h-100 d-flex justify-content-end align-items-end"
+							style="grid-column: {{ field.x + 1}}; grid-row: {{ field.y + 1 }}; font-size: var(--text-med);
+								padding-right: var(--space-med); padding-bottom: var(--space-med);">
+							<div class="bg-white">{{ field.solution_position }}</div>
+						</div>
+						<div
+							class="text-center align-content-center w-100 h-100 border border-black border-3"
+							style="grid-column: {{ field.solution_position }}; grid-row: {{ paroli.matrix_height + 2 }}; font-size: var(--text-large)">
+							<div>{{ field.value }}</div>
+						</div>
+					{%- endif -%}
+				{%- endif -%}
+			{%- endfor -%}
+		{%- endfor -%}
+	</div>
+{%- endmacro -%}

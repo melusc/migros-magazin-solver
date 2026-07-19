@@ -5,6 +5,7 @@ from jinja2 import StrictUndefined
 
 import config
 from scrapers.crossword import Arrow, fetch_crossword, layout_crossword
+from scrapers.paroli import MatrixFieldType, fetch_and_solve
 
 app = Flask(__name__)
 app.config.from_prefixed_env()
@@ -21,11 +22,13 @@ def inject_stage_and_region():
 	return {
 		"str": str,
 		"len": len,
+		"int": int,
 		"nonce": g.nonce,
 		"Arrow": Arrow,
 		"isinstance": isinstance,
 		"layout_crossword": layout_crossword,
 		"set": set,
+		"MatrixFieldType": MatrixFieldType,
 	}
 
 
@@ -49,8 +52,11 @@ def set_headers(response):
 @app.route("/", methods=["GET"])
 def index():
 	crosswords = fetch_crossword()
+	paroli, could_solve = fetch_and_solve()
 
-	return render_template("index.html", crosswords=crosswords)
+	return render_template(
+		"index.html", crosswords=crosswords, paroli=paroli, paroli_solved=could_solve
+	)
 
 
 if __name__ == "__main__":

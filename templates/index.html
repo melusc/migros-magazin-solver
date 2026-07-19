@@ -1,12 +1,36 @@
-{%- extends 'base.html' -%}
 {%- from "_macros/crossword.html" import crossword with context -%}
+{%- from "_macros/paroli.html" import paroli_grid with context -%}
 
-{%- block content -%}
-	<h1>Migros Magazin Solver</h1>
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Migros Magazin Solver</title>
 
-	<h2>Crossword</h2>
-	{%- for crossword_ in crosswords -%}
-		{%- set puzzle, width, height = layout_crossword(crossword_) -%}
-		{{ crossword(crossword_, puzzle, width, height) }}
-	{%- endfor -%}
-{%- endblock -%}
+		<link
+			href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+			rel="stylesheet"
+			integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
+			crossorigin="anonymous"
+		/>
+	</head>
+	<body>
+		<main class="p-4">
+			<h1>Migros Magazin Solver</h1>
+
+			<h2>Crossword</h2>
+			{%- for crossword_ in crosswords -%}
+				{%- set puzzle, width, height = layout_crossword(crossword_) -%}
+				{{ crossword(crossword_, puzzle, width, height) }}
+			{%- endfor -%}
+
+			<h2 class="mt-4">Paroli</h2>
+			{%- if paroli_solved -%}
+				{{ paroli_grid(paroli) }}
+			{%- else -%}
+				<div>Could not solve today's Paroli.</div>
+			{%- endif -%}
+		</main>
+</body>
+</html>

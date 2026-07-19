@@ -1,7 +1,6 @@
 {%- from "_macros/arrow.html" import arrow, arrow_defs with context -%}
 
 {%- macro crossword(crossword, items, width, height) -%}
-	{%- set block_size = "calc(80vw / " + str(width) + ")" -%}
 	<div class="d-grid user-select-none" style="
 		--block-size: calc(80vw / {{ width }});
 		--text-large: calc(var(--block-size) / 3);
@@ -19,7 +18,7 @@
 			{%- if isinstance(item, str) and len(item) == 1 -%}
 				{%- if (x, y) not in done -%}
 					<div
-						class="text-center align-content-center w-100 h-100 border border-black"
+						class="text-center align-content-center h-100 border border-black"
 						style="grid-column: {{ x + 1 }}; grid-row: {{ y + 1 }}; font-size: var(--text-large)">
 						<div>{{ item }}</div>
 					</div>
@@ -27,7 +26,7 @@
 				{%- endif -%}
 			{%- elif isinstance(item, str) -%}
 				<div
-					class="align-content-center w-100 h-100 border border-black fw-bold"
+					class="align-content-center h-100 border border-black fw-bold"
 					style="grid-column: {{ x + 1 }}; grid-row: {{ y + 1 }}; font-size: var(--text-small); padding: var(--space-small)">
 					{%- for line in item.split("+") -%}
 						<div>{{ line }}</div>
