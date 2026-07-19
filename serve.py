@@ -59,7 +59,6 @@ def set_headers(response):
 			"default-src 'none'",
 			f"style-src-elem 'nonce-{g.nonce}' cdn.jsdelivr.net",
 			"style-src-attr 'unsafe-inline'",
-			"img-src data:",
 		),
 	)
 	del response.headers["Server"]
