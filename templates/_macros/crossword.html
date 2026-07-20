@@ -16,7 +16,7 @@
 	along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #}
 
-{%- from "_macros/arrow.html" import arrow, arrow_defs with context -%}
+{%- from "_macros/arrow.html" import arrow with context -%}
 
 {%- macro crossword(crossword, items, width, height) -%}
 	<div
@@ -32,8 +32,6 @@
 			grid-template-rows: repeat({{ height + 2 }}, var(--block-size));
 		"
 	>
-		{{ arrow_defs() }}
-
 		{%- for item, x, y in items -%}
 			{%- if isinstance(item, str) and len(item) == 1 -%}
 				<div
