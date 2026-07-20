@@ -46,26 +46,19 @@
 	</svg>
 {%- endmacro -%}
 
+{%- set ARROW_SPRITE_IDS = {
+	Arrow.BELOW_ACROSS: "arrow-below-across",
+	Arrow.ABOVE_ACROSS: "arrow-above-across",
+	Arrow.RIGHT_ACROSS: "arrow-right-across",
+	Arrow.RIGHT_DOWN: "arrow-right-down",
+	Arrow.LEFT_DOWN: "arrow-left-down",
+	Arrow.BELOW_DOWN: "arrow-below-down",
+} -%}
+
 {%- macro arrow(direction, x, y) -%}
-	{%- set id = None -%}
-
-	{%- if direction == Arrow.BELOW_ACROSS -%}
-		{%- set id = "arrow-below-across" -%}
-	{%- elif direction == Arrow.ABOVE_ACROSS -%}
-		{%- set id = "arrow-above-across" -%}
-	{%- elif direction == Arrow.RIGHT_ACROSS -%}
-		{%- set id = "arrow-right-across" -%}
-	{%- elif direction == Arrow.RIGHT_DOWN -%}
-		{%- set id = "arrow-right-down" -%}
-	{%- elif direction == Arrow.LEFT_DOWN -%}
-		{%- set id = "arrow-left-down" -%}
-	{%- elif direction == Arrow.BELOW_DOWN -%}
-		{%- set id = "arrow-below-down" -%}
-	{%- endif -%}
-
 	<div class="d-flex" style="grid-column: {{ x + 1 }}; grid-row: {{ y + 1 }}">
 		<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
-			<use href="#{{ id }}" x="0" y="0" />
+			<use href="#{{ ARROW_SPRITE_IDS[direction] }}" x="0" y="0" />
 		</svg>
 	</div>
 {%- endmacro -%}
