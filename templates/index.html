@@ -48,11 +48,13 @@
 			</h2>
 			{%- if crossword_exception -%}
 				{{ crossword_exception }}
-			{%- else -%}
+			{%- elif crosswords -%}
 				{{ arrow_defs() }}
 				{%- for crossword_, puzzle, width, height in crosswords -%}
 					{{ crossword(crossword_, puzzle, width, height) }}
 				{%- endfor -%}
+			{%- else -%}
+				<div>No crossword today.</div>
 			{%- endif -%}
 
 			<h2 class="mt-4">
