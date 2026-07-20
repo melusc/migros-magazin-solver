@@ -39,15 +39,12 @@ def set_nonce():
 def inject_stage_and_region():
 	return {
 		"str": str,
-		"len": len,
 		"int": int,
 		"nonce": g.nonce,
 		"Arrow": Arrow,
-		"isinstance": isinstance,
 		"set": set,
 		"MatrixFieldType": MatrixFieldType,
 		"SudokuBorder": SudokuBorder,
-		"enumerate": enumerate,
 	}
 
 
