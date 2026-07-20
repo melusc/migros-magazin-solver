@@ -82,10 +82,13 @@
 			</h2>
 			{%- if quiz_exception -%}
 				{{ quiz_exception }}
-			{%- else -%}
+			{%- elif quiz_answers -%}
 				{%- for word in quiz_answers -%}
 					{{ quiz_grid(word, quiz_questions) }}
 				{%- endfor -%}
+			{%- else -%}
+				<div>Could not solve today's quiz.</div>
+				{{ quiz_grid(none, quiz_questions) }}
 			{%- endif -%}
 		</main>
 	</body>

@@ -125,7 +125,7 @@ def _solve_quiz_prefix(
 			yield from _solve_quiz_prefix(next_prefix, questions, words)
 
 
-def _solve_quiz(questions: list[Question]):
+def _solve_quiz(questions: list[Question]) -> list[str]:
 	words = get_words_of_length(len(questions))
 
 	# Small optimisation, remove words which don't start
@@ -133,10 +133,7 @@ def _solve_quiz(questions: list[Question]):
 	first_keys = [option.key for option in questions[0].options]
 	words = [word for word in words if word[0] in first_keys]
 
-	answers = list(_solve_quiz_prefix("", questions, words))
-
-	# small hack to still render quiz
-	return answers or ["?" * len(questions)]
+	return list(_solve_quiz_prefix("", questions, words))
 
 
 def fetch_and_solve_quiz() -> tuple[list[Question], list[str]]:
@@ -148,19 +145,19 @@ def fetch_and_solve_quiz() -> tuple[list[Question], list[str]]:
 if __name__ == "__main__":
 	questions, answers = fetch_and_solve_quiz()
 
-	for a, answer in enumerate(answers):
+	for a, answer in enumerate(answers or [None]):
 		if a > 0:
 			print()
 			print("=" * 10)
 			print()
 
-		print(answer + "\n")
+		print((answer or "Could not solve") + "\n")
 
 		for i, question in enumerate(questions):
 			print(question.question)
 
 			for option in question.options:
-				if option.key == answer[i]:
+				if answer is not None and option.key == answer[i]:
 					print(f"({option.key}) {option.text}")
 				else:
 					print(f" {option.key}  {option.text}")
