@@ -50,7 +50,7 @@
 				{{ crossword_exception }}
 			{%- else -%}
 				{{ arrow_defs() }}
-				{%- set puzzle, width, height = layout_crossword(crossword_) -%}
+				{%- for crossword_, puzzle, width, height in crosswords -%}
 					{{ crossword(crossword_, puzzle, width, height) }}
 				{%- endfor -%}
 			{%- endif -%}

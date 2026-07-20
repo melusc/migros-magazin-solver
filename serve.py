@@ -44,7 +44,6 @@ def inject_stage_and_region():
 		"nonce": g.nonce,
 		"Arrow": Arrow,
 		"isinstance": isinstance,
-		"layout_crossword": layout_crossword,
 		"set": set,
 		"MatrixFieldType": MatrixFieldType,
 		"SudokuBorder": SudokuBorder,
@@ -71,7 +70,9 @@ def index():
 	crossword_exception = None
 
 	try:
-		crosswords = fetch_crossword()
+		crosswords = [
+			(crossword, *layout_crossword(crossword)) for crossword in fetch_crossword()
+		]
 	except Exception as e:
 		crossword_exception = e
 
