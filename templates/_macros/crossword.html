@@ -17,20 +17,12 @@
 #}
 
 {%- from "_macros/arrow.html" import arrow with context -%}
+{%- from "_macros/grid.html" import grid_style, winning_word_field -%}
 
 {%- macro crossword(crossword, items, width, height) -%}
 	<div
 		class="d-grid user-select-none"
-		style="
-			--block-size: calc(70vw / {{ width }});
-			--text-large: calc(var(--block-size) / 3);
-			--text-small: calc(var(--block-size) / 6.5);
-			--text-med: calc(var(--block-size) / 5);
-			--space-small: calc(var(--block-size) / 24);
-			--space-med: calc(var(--block-size) / 12);
-			grid-template-columns: repeat({{ width }}, var(--block-size));
-			grid-template-rows: repeat({{ height + 2 }}, var(--block-size));
-		"
+		style="{{ grid_style("70vw", width, height + 2) }}"
 	>
 		{%- for item, x, y in items -%}
 			{%- if isinstance(item, str) and len(item) == 1 -%}
@@ -60,50 +52,7 @@
 		{%- endfor -%}
 
 		{%- for field in crossword.winning_word_fields -%}
-			<div
-				class="fw-bolder"
-				style="
-					grid-column: {{ field.position }};
-					grid-row: {{ height + 2 }};
-					font-size: var(--text-med);
-					padding-left: var(--space-med);
-				"
-			>
-				{{ field.position }}
-			</div>
-			<div
-				style="
-					grid-column: {{ field.x + 1 }};
-					grid-row: {{ field.y + 1 }};
-					font-size: var(--text-med);
-					padding: var(--space-small);
-				"
-			>
-				<div class="border rounded-circle border-black border-1 h-100"></div>
-			</div>
-			<div
-				class="h-100 d-flex justify-content-end align-items-end"
-				style="
-					grid-column: {{ field.x + 1 }};
-					grid-row: {{ field.y + 1 }};
-					font-size: var(--text-med);
-					padding-right: var(--space-med);
-					padding-bottom: var(--space-med);
-				"
-			>
-				<div class="bg-white p-1 pb-0">{{ field.position }}</div>
-			</div>
-			<div
-				class="text-center align-content-center h-100
-					border border-black border-3 {{ "border-start-0" if field.position > 1 }}"
-				style="
-					grid-column: {{ field.position }};
-					grid-row: {{ height + 2 }};
-					font-size: var(--text-large);
-				"
-			>
-				{{ field.character }}
-			</div>
+			{{ winning_word_field(field.position, field.character, field.x, field.y, height + 2) }}
 		{%- endfor -%}
 	</div>
 {%- endmacro -%}

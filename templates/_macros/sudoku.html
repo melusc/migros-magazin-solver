@@ -16,14 +16,13 @@
 	along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #}
 
+{%- from "_macros/grid.html" import grid_style -%}
+
 {%- macro sudoku_grid(sudoku) -%}
 	<div
 		class="d-grid user-select-none"
 		style="
-			--block-size: calc(30vmax / {{ sudoku.dim_x }});
-			--text-large: calc(var(--block-size) / 3);
-			grid-template-columns: repeat({{ sudoku.dim_x }}, var(--block-size));
-			grid-template-rows: repeat({{ sudoku.dim_y }}, var(--block-size));
+			{{ grid_style("30vmax", sudoku.dim_x, sudoku.dim_y) }}
 			font-size: var(--text-large);
 		"
 	>

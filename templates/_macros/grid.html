@@ -1,0 +1,75 @@
+{#
+	This file is part of Migros Magazin Solver (https://github.com/melusc/migros-magazin-solver)
+	Copyright (C) 2026  Luca Schnellmann <oss@lusc.ch>
+
+	This program is free software: you can redistribute it and/or modify
+	it under the terms of the GNU General Public License as published by
+	the Free Software Foundation, either version 3 of the License, or
+	(at your option) any later version.
+
+	This program is distributed in the hope that it will be useful,
+	but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+	GNU General Public License for more details.
+
+	You should have received a copy of the GNU General Public License
+	along with this program.  If not, see <https://www.gnu.org/licenses/>.
+#}
+
+{%- macro grid_style(size, columns, rows) -%}
+	--block-size: calc({{ size }} / {{ columns }});
+	--text-large: calc(var(--block-size) / 3);
+	--text-small: calc(var(--block-size) / 6.5);
+	--text-med: calc(var(--block-size) / 5);
+	--space-small: calc(var(--block-size) / 24);
+	--space-med: calc(var(--block-size) / 12);
+	grid-template-columns: repeat({{ columns }}, var(--block-size));
+	grid-template-rows: repeat({{ rows }}, var(--block-size));
+{%- endmacro -%}
+
+{%- macro winning_word_field(position, character, x, y, row) -%}
+	<div
+		class="fw-bolder"
+		style="
+			grid-column: {{ position }};
+			grid-row: {{ row }};
+			font-size: var(--text-med);
+			padding-left: var(--space-med);
+		"
+	>
+		{{ position }}
+	</div>
+	<div
+		style="
+			grid-column: {{ x + 1 }};
+			grid-row: {{ y + 1 }};
+			font-size: var(--text-med);
+			padding: var(--space-small);
+		"
+	>
+		<div class="border rounded-circle border-black border-1 h-100"></div>
+	</div>
+	<div
+		class="h-100 d-flex justify-content-end align-items-end"
+		style="
+			grid-column: {{ x + 1 }};
+			grid-row: {{ y + 1 }};
+			font-size: var(--text-med);
+			padding-right: var(--space-med);
+			padding-bottom: var(--space-med);
+		"
+	>
+		<div class="bg-white p-1 pb-0">{{ position }}</div>
+	</div>
+	<div
+		class="text-center align-content-center h-100
+			border border-black border-3 {{ "border-start-0" if position > 1 }}"
+		style="
+			grid-column: {{ position }};
+			grid-row: {{ row }};
+			font-size: var(--text-large);
+		"
+	>
+		{{ character }}
+	</div>
+{%- endmacro -%}
