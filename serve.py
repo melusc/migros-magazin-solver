@@ -38,11 +38,8 @@ def set_nonce():
 @app.context_processor
 def inject_stage_and_region():
 	return {
-		"str": str,
-		"int": int,
 		"nonce": g.nonce,
 		"Arrow": Arrow,
-		"set": set,
 		"MatrixFieldType": MatrixFieldType,
 		"SudokuBorder": SudokuBorder,
 	}
