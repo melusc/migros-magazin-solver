@@ -41,7 +41,7 @@
 							font-size: var(--text-large);
 						"
 					>
-						{{ field.value }}
+						{{ field.value or "" }}
 					</div>
 
 					{%- if isinstance(field.solution_position, int) -%}
@@ -87,7 +87,7 @@
 								font-size: var(--text-large);
 							"
 						>
-							{{ field.value }}
+							{{ field.value or "" }}
 						</div>
 					{%- endif -%}
 				{%- endif -%}
