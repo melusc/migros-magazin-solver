@@ -14,9 +14,8 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-from secrets import token_urlsafe
 
-from flask import Flask, g, render_template
+from flask import Flask, render_template
 from jinja2 import StrictUndefined
 
 import config
@@ -30,15 +29,9 @@ app.config.from_prefixed_env()
 app.jinja_env.undefined = StrictUndefined
 
 
-@app.before_request
-def set_nonce():
-	g.nonce = token_urlsafe(20)
-
-
 @app.context_processor
 def inject_stage_and_region():
 	return {
-		"nonce": g.nonce,
 		"Arrow": Arrow,
 		"MatrixFieldType": MatrixFieldType,
 		"SudokuBorder": SudokuBorder,
@@ -50,7 +43,7 @@ def set_headers(response):
 	response.headers["Content-Security-Policy"] = "; ".join(
 		(
 			"default-src 'none'",
-			f"style-src-elem 'nonce-{g.nonce}' cdn.jsdelivr.net",
+			f"style-src-elem cdn.jsdelivr.net",
 			"style-src-attr 'unsafe-inline'",
 		),
 	)
