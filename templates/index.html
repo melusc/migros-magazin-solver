@@ -85,6 +85,11 @@
 			{%- if quiz_exception -%}
 				{{ quiz_exception }}
 			{%- elif quiz_answers -%}
+				{%- if quiz_answers|length > 1 -%}
+					<div class="alert alert-info" style="width: max-content;">
+						Multiple answers possible, check the answers.
+					</div>
+				{%- endif -%}
 				{%- for word in quiz_answers -%}
 					{{ quiz_grid(word, quiz_questions) }}
 				{%- endfor -%}
