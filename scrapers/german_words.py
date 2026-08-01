@@ -17,8 +17,8 @@
 import functools
 import unicodedata
 from collections.abc import Iterator
-from pathlib import Path
 
+import config
 from scrapers.util import get
 
 _URL = "https://gist.github.com/MarvinJWendt/2f4f4154b8ae218600eb091a5706b5f4/raw/36b70dd6be330aa61cd4d4cdfda6234dcb0b8784/wordlist-german.txt"
@@ -37,7 +37,7 @@ def _get_words() -> Iterator[str]:
 			yield word
 
 
-_wordlist_directory = Path(__file__).parent.parent / ".wordlists-german"
+_wordlist_directory = config.wordlist_directory
 
 
 @functools.cache

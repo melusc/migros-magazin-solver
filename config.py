@@ -15,6 +15,7 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 from os import environ
+from pathlib import Path
 
 from dotenv import load_dotenv
 
@@ -38,4 +39,11 @@ def _read_int(key: str) -> int:
 
 port = _read_int("PORT")
 
-__all__ = ("ConfigException", "port")
+_state_directory = environ.get("STATE_DIRECTORY")
+wordlist_directory = (
+	Path(_state_directory)
+	if _state_directory
+	else Path(__file__).parent / ".wordlists-german"
+)
+
+__all__ = ("ConfigException", "port", "wordlist_directory")
