@@ -15,12 +15,16 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import dataclasses
-from typing import Iterable
+from collections.abc import Iterable
 
 from bs4 import BeautifulSoup
 
 from scrapers.german_words import get_words_of_length
 from scrapers.util import get, memoise
+
+
+class QuizException(Exception):
+	pass
 
 
 @memoise(ttl=1200)
@@ -45,11 +49,11 @@ def _extract_quiz(page: str) -> list[Question]:
 
 	quest = soup.find(id="quest")
 	if not quest:
-		raise Exception("Could not find element #quest.")
+		raise QuizException("Could not find element #quest.")
 
 	ol = quest.find("ol")
 	if not ol:
-		raise Exception("Could not find <ol> element.")
+		raise QuizException("Could not find <ol> element.")
 
 	questions: list[Question] = []
 
@@ -57,23 +61,23 @@ def _extract_quiz(page: str) -> list[Question]:
 	for q, li in enumerate(list_items):
 		question_element = li.find("div", recursive=False)
 		if not question_element:
-			raise Exception(f"Could not find question #{q}.")
+			raise QuizException(f"Could not find question #{q}.")
 		question = question_element.text.strip()
 		if not question:
-			raise Exception(f"Question #{q} was empty.")
+			raise QuizException(f"Question #{q} was empty.")
 
 		options = li.find_all("li")
 		# Treat only one or zero as error
 		# otherwise be liberal in what we accept
 		if len(options) <= 1:
-			raise Exception(f'Could not find options to "{question}".')
+			raise QuizException(f'Could not find options to "{question}".')
 
 		options_parsed: list[Option] = []
 
 		for i, option in enumerate(options):
 			option_anchor = option.find("a")
 			if not option_anchor:
-				raise Exception(
+				raise QuizException(
 					f"Could not find option's anchor in question #{q}, option #{i}."
 				)
 
@@ -82,22 +86,24 @@ def _extract_quiz(page: str) -> list[Question]:
 			option_text = next(children)
 
 			if not option_key_element or not option_key_element.text.strip():
-				raise Exception(
+				raise QuizException(
 					f"Could not find option key element in question #{q}, option #{i}."
 				)
 
 			option_key_value = option_key_element.text.strip()
 			if len(option_key_value) != 1:
-				raise Exception(
+				raise QuizException(
 					f"Option key is not exactly one character in question #{q}, option #{i}."
 				)
 
 			if not option_text:
-				raise Exception(f"Could not find option text in question #{q}, option #{i}.")
+				raise QuizException(
+					f"Could not find option text in question #{q}, option #{i}."
+				)
 
 			option_text_value = option_text.text.strip().upper()
 			if not option_text_value:
-				raise Exception(f"Option value is blank in question #{q}, option #{i}.")
+				raise QuizException(f"Option value is blank in question #{q}, option #{i}.")
 
 			options_parsed.append(Option(key=option_key_value, text=option_text_value))
 
@@ -163,3 +169,5 @@ if __name__ == "__main__":
 					print(f" {option.key}  {option.text}")
 
 			print()
+
+__all__ = ("Option", "Question", "QuizException", "fetch_and_solve_quiz")

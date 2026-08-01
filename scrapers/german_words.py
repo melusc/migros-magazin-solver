@@ -57,4 +57,4 @@ def get_words_of_length(length: int) -> list[str]:
 	return result
 
 
-__all__ = ("get_words", "get_words_of_length")
+__all__ = ("get_words_of_length",)

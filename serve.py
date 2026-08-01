@@ -17,12 +17,19 @@
 
 from flask import Flask, render_template
 from jinja2 import StrictUndefined
+from requests import RequestException
 
 import config
-from scrapers.crossword import Arrow, fetch_crossword, layout_crossword
-from scrapers.paroli import MatrixFieldType, fetch_and_solve_paroli
-from scrapers.quiz import fetch_and_solve_quiz
-from scrapers.sudoku import SudokuBorder, fetch_and_parse_sudoku
+from scrapers.crossword import (
+	Arrow,
+	CrosswordException,
+	fetch_crossword,
+	layout_crossword,
+)
+from scrapers.paroli import MatrixFieldType, ParoliException, fetch_and_solve_paroli
+from scrapers.parse_js import ParseException
+from scrapers.quiz import QuizException, fetch_and_solve_quiz
+from scrapers.sudoku import SudokuBorder, SudokuException, fetch_and_parse_sudoku
 
 app = Flask(__name__)
 app.config.from_prefixed_env()
@@ -40,12 +47,8 @@ def inject_stage_and_region():
 
 @app.after_request
 def set_headers(response):
-	response.headers["Content-Security-Policy"] = "; ".join(
-		(
-			"default-src 'none'",
-			f"style-src-elem cdn.jsdelivr.net",
-			"style-src-attr 'unsafe-inline'",
-		),
+	response.headers["Content-Security-Policy"] = (
+		"default-src 'none'; style-src-elem cdn.jsdelivr.net; style-src-attr 'unsafe-inline'"
 	)
 	del response.headers["Server"]
 	return response
@@ -60,7 +63,7 @@ def index():
 		crosswords = [
 			(crossword, *layout_crossword(crossword)) for crossword in fetch_crossword()
 		]
-	except Exception as e:
+	except (RequestException, CrosswordException) as e:
 		crossword_exception = e
 
 	paroli = None
@@ -69,14 +72,14 @@ def index():
 
 	try:
 		paroli, could_solve = fetch_and_solve_paroli()
-	except Exception as e:
+	except (RequestException, ParseException, ParoliException) as e:
 		paroli_exception = e
 
 	sudoku = None
 	sudoku_exception = None
 	try:
 		sudoku = fetch_and_parse_sudoku()
-	except Exception as e:
+	except (RequestException, ParseException, SudokuException) as e:
 		sudoku_exception = e
 
 	quiz_questions = None
@@ -84,7 +87,7 @@ def index():
 	quiz_exception = None
 	try:
 		quiz_questions, quiz_answers = fetch_and_solve_quiz()
-	except Exception as e:
+	except (RequestException, QuizException) as e:
 		quiz_exception = e
 
 	return render_template(

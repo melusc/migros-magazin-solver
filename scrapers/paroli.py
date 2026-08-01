@@ -25,6 +25,10 @@ from scrapers.util import get, memoise
 _BASE = "https://comhouse.ch/mmagazin/raetsel/paroli/PA_DE"
 
 
+class ParoliException(Exception):
+	pass
+
+
 class MatrixFieldType(Enum):
 	Regular = 0
 	Nothing = 1
@@ -71,7 +75,7 @@ _extract_script_url_re = re.compile(
 def _extract_script_url(page: str) -> str:
 	match = _extract_script_url_re.search(page)
 	if not match:
-		raise Exception("Could not extract script url.")
+		raise ParoliException("Could not extract script url.")
 
 	return match.group("url")
 
@@ -83,27 +87,27 @@ def _fetch_script(script_url: str) -> str:
 
 def _coerce_ww_game(ww_game: Any) -> ParoliGame:
 	if not isinstance(ww_game, dict):
-		raise Exception("Expected ww_game to be a dict.")
+		raise ParoliException("Expected ww_game to be a dict.")
 
 	if "lsglength" not in ww_game:
-		raise Exception('Missing key "lsglength".')
+		raise ParoliException('Missing key "lsglength".')
 
 	solution_length = ww_game["lsglength"]
 	if not isinstance(solution_length, int):
-		raise Exception(
+		raise ParoliException(
 			f'Expected "lsglength" to be an integer, got {type(solution_length)}.'
 		)
 
 	if "matrix" not in ww_game:
-		raise Exception('Missing key "matrix".')
+		raise ParoliException('Missing key "matrix".')
 
 	matrix = ww_game["matrix"]
 	if not isinstance(matrix, list):
-		raise Exception(f"Expected matrix to be a list, got {type(matrix)}.")
+		raise ParoliException(f"Expected matrix to be a list, got {type(matrix)}.")
 
 	for i, row in enumerate(matrix):
 		if not isinstance(row, str):
-			raise Exception(f"Expected matrix[{i}] to be a string, got {type(row)}.")
+			raise ParoliException(f"Expected matrix[{i}] to be a string, got {type(row)}.")
 
 	matrix_parsed: list[list[MatrixField]] = []
 
@@ -119,7 +123,7 @@ def _coerce_ww_game(ww_game: Any) -> ParoliGame:
 		if matrix_width == -1:
 			matrix_width = len(split)
 		if matrix_width != len(split):
-			raise Exception("Received matrix with uneven widths.")
+			raise ParoliException("Received matrix with uneven widths.")
 
 		for x, char in enumerate(split):
 			if "0" <= char <= "9":
@@ -157,14 +161,14 @@ def _coerce_ww_game(ww_game: Any) -> ParoliGame:
 					)
 				)
 			else:
-				raise Exception(f'Received unexpected character "{char}" in matrix[{y}].')
+				raise ParoliException(f'Received unexpected character "{char}" in matrix[{y}].')
 
 	if "worddefinition" not in ww_game:
-		raise Exception('Missing key "worddefinition".')
+		raise ParoliException('Missing key "worddefinition".')
 
 	worddefinition = ww_game["worddefinition"]
 	if not isinstance(worddefinition, list):
-		raise Exception(
+		raise ParoliException(
 			f"Expected worddefinition to be a list, got {type(worddefinition)}."
 		)
 
@@ -172,14 +176,16 @@ def _coerce_ww_game(ww_game: Any) -> ParoliGame:
 
 	for i, word in enumerate(worddefinition):
 		if not isinstance(word, dict):
-			raise Exception(f"Expected worddefinition[{i}] to be a dict, got {type(word)}.")
+			raise ParoliException(
+				f"Expected worddefinition[{i}] to be a dict, got {type(word)}."
+			)
 
 		if "word" not in word:
-			raise Exception(f'Missing key "word" in worddefinition[{i}].')
+			raise ParoliException(f'Missing key "word" in worddefinition[{i}].')
 
 		word_ = word["word"]  # ty:ignore[invalid-argument-type]
 		if not isinstance(word_, str):
-			raise Exception(
+			raise ParoliException(
 				f'Expected worddefinition[{i}]["cy"] to be a string, got {type(word_)}.'
 			)
 
@@ -203,7 +209,7 @@ class ParoliSlot:
 
 
 def _find_slots(paroli: ParoliGame):
-	word_lengths = set(len(word) for word in paroli.words)
+	word_lengths = {len(word) for word in paroli.words}
 
 	slots: list[ParoliSlot] = []
 
@@ -364,7 +370,7 @@ def extract_winning_word(paroli: ParoliGame) -> str:
 		for cell in row:
 			if cell.solution_position is not None:
 				if cell.value is None:
-					raise Exception(f"Unexpected empty value in {cell}")
+					raise ParoliException(f"Unexpected empty value in {cell}")
 
 				result[cell.solution_position - 1] = cell.value
 
@@ -393,11 +399,11 @@ if __name__ == "__main__":
 		print("Solved\n")
 
 		for row in paroli.matrix:
-			print("  " + "".join((c.value or " " for c in row)))
+			print("  " + "".join(c.value or " " for c in row))
 
 		print(f"\nWinning word: {extract_winning_word(paroli)}")
 	else:
 		print("Could not solve")
 		print(paroli)
 
-__all__ = ("ParoliGame", "fetch_and_solve_paroli", "MatrixFieldType")
+__all__ = ("MatrixFieldType", "ParoliException", "ParoliGame", "fetch_and_solve_paroli")

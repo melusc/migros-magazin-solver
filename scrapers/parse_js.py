@@ -19,11 +19,15 @@ import re
 from typing import Any
 
 
+class ParseException(Exception):
+	pass
+
+
 def extract_variable(script: str, variable: str) -> Any:
 	_var_declaration = re.compile(rf"var {variable}\s*=\s*")
 	start = _var_declaration.search(script)
 	if not start:
-		raise Exception(f"Could not find var {variable} declaration.")
+		raise ParseException(f"Could not find var {variable} declaration.")
 
 	offset = start.end()
 
@@ -47,7 +51,7 @@ def extract_variable(script: str, variable: str) -> Any:
 		nonlocal offset
 
 		if script[offset] != expected:
-			raise Exception(f'Expected "{expected}" but got "{script[offset]}".')
+			raise ParseException(f'Expected "{expected}" but got "{script[offset]}".')
 
 		offset += 1
 
@@ -163,10 +167,10 @@ def extract_variable(script: str, variable: str) -> Any:
 		if "0" <= char <= "9":
 			return parse_float()
 
-		raise Exception(f'Unknown literal "{char}".')
+		raise ParseException(f'Unknown literal "{char}".')
 
 	eat_unused()
 	return parse_literal()
 
 
-__all__ = ("extract_variable",)
+__all__ = ("ParseException", "extract_variable")

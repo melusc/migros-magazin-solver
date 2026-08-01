@@ -21,9 +21,13 @@ from dotenv import load_dotenv
 load_dotenv()
 
 
+class ConfigException(Exception):
+	pass
+
+
 def _read(key: str) -> str:
 	if key not in environ or not environ[key]:
-		raise Exception(f"Missing env variable {key}")
+		raise ConfigException(f"Missing env variable {key}")
 
 	return environ[key]
 
@@ -34,4 +38,4 @@ def _read_int(key: str) -> int:
 
 port = _read_int("PORT")
 
-__all__ = ("port",)
+__all__ = ("ConfigException", "port")

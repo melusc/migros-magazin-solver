@@ -24,6 +24,10 @@ from scrapers.util import get, memoise
 _BASE = "https://comhouse.ch/mmagazin/raetsel/schwedenraetsel"
 
 
+class CrosswordException(Exception):
+	pass
+
+
 @dataclasses.dataclass(frozen=True, kw_only=True)
 class Clue:
 	x: int
@@ -76,7 +80,7 @@ _extract_puzzles_array_re = re.compile(
 def _extract_puzzles_array(page: str) -> list[str]:
 	match = re.search(_extract_puzzles_array_re, page)
 	if not match:
-		raise Exception("Could not parse page.")
+		raise CrosswordException("Could not parse page.")
 
 	array_raw = match.group("array")
 	return json.loads(array_raw)
@@ -199,10 +203,11 @@ if __name__ == "__main__":
 
 
 __all__ = (
-	"Crossword",
 	"Arrow",
-	"WinningWordField",
 	"Clue",
+	"Crossword",
+	"CrosswordException",
+	"WinningWordField",
 	"fetch_crossword",
 	"layout_crossword",
 )
