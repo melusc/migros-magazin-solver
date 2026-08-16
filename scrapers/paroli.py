@@ -183,7 +183,7 @@ def _coerce_ww_game(ww_game: Any) -> ParoliGame:
 		if "word" not in word:
 			raise ParoliException(f'Missing key "word" in worddefinition[{i}].')
 
-		word_ = word["word"]  # ty:ignore[invalid-argument-type]
+		word_ = word["word"]
 		if not isinstance(word_, str):
 			raise ParoliException(
 				f'Expected worddefinition[{i}]["cy"] to be a string, got {type(word_)}.'

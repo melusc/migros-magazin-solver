@@ -165,7 +165,7 @@ def _coerce_sudoku(ww_game: Any) -> Sudoku:
 		if "x" not in item:
 			raise SudokuException(f'Missing key "x" in show_Winfields[{i}].')
 
-		x = item["x"]  # ty:ignore[invalid-argument-type]
+		x = item["x"]
 		if not isinstance(x, int):
 			raise SudokuException(
 				f'Expected show_Winfields[{i}]["x"] to be an integer, got {type(x)}.'
@@ -174,7 +174,7 @@ def _coerce_sudoku(ww_game: Any) -> Sudoku:
 		if "y" not in item:
 			raise SudokuException(f'Missing key "x" in show_Winfields[{i}].')
 
-		y = item["y"]  # ty:ignore[invalid-argument-type]
+		y = item["y"]
 		if not isinstance(y, int):
 			raise SudokuException(
 				f'Expected show_Winfields[{i}]["y"] to be an integer, got {type(y)}.'
