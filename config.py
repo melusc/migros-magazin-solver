@@ -33,11 +33,7 @@ def _read(key: str) -> str:
 	return environ[key]
 
 
-def _read_int(key: str) -> int:
-	return int(_read(key))
-
-
-port = _read_int("PORT")
+bind = environ.get("BIND", "127.0.0.1:3000")
 
 _state_directory = environ.get("STATE_DIRECTORY")
 wordlist_directory = (
@@ -46,4 +42,4 @@ wordlist_directory = (
 	else Path(__file__).parent / ".wordlists-german"
 )
 
-__all__ = ("ConfigException", "port", "wordlist_directory")
+__all__ = ("ConfigException", "bind", "wordlist_directory")

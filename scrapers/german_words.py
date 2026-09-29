@@ -58,3 +58,6 @@ def get_words_of_length(length: int) -> list[str]:
 
 
 __all__ = ("get_words_of_length",)
+
+if __name__ == "__main__":
+	get_words_of_length(7)

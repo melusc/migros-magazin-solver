@@ -14,11 +14,11 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-from config import port as _port
+from config import bind as _bind
 
 wsgi_app = "serve:app"
 
-bind = f"127.0.0.1:{_port}"
+bind = _bind
 
 workers = 1
 threads = 1

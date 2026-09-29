@@ -106,4 +106,5 @@ def index():
 
 
 if __name__ == "__main__":
-	app.run("127.0.0.1", port=config.port)
+	host, port = config.bind.split(':', 1)
+	app.run(host, port=int(port))
