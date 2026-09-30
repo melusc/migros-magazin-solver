@@ -18,7 +18,7 @@ RUN uv run --no-sync -m scrapers.german_words
 
 RUN rm -r /usr/local/bin/uv /usr/local/bin/uvx /root/.cache
 
-FROM ghcr.io/astral-sh/uv:python3.14-bookworm-slim@sha256:7cf77f594be8042dab6daa9fe326f90962252268b4f120a7f5dccce4d947e6c1 AS runner
+FROM scratch
 
 COPY --from=builder / /
 
