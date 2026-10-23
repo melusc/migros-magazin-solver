@@ -1,4 +1,6 @@
-FROM ghcr.io/astral-sh/uv:python3.14-bookworm-slim@sha256:7cf77f594be8042dab6daa9fe326f90962252268b4f120a7f5dccce4d947e6c1 AS builder
+FROM python:3.14-slim-bookworm@sha256:945c2676dc2b18e0c1f16879244122c57c0ffede60006bf3df159c507a31bcae AS builder
+
+COPY --from=ghcr.io/astral-sh/uv:latest@sha256:32a7bb39b496babbd997b0a39a4d66c126bdaf5661b302bf6f06abda8deca6ff /uv /uvx /bin/
 
 ENV UV_LINK_MODE=copy
 ENV UV_PYTHON_CACHE_DIR=/root/.cache/uv/python
@@ -16,7 +18,7 @@ COPY *.py .
 
 RUN uv run --no-sync -m scrapers.german_words
 
-RUN rm -r /usr/local/bin/uv /usr/local/bin/uvx /root/.cache
+RUN rm -r /bin/uv /bin/uvx /root/.cache
 
 FROM scratch
 
