@@ -28,6 +28,18 @@ def _download_wordlist() -> str:
 	return get(_URL)
 
 
+DIACRITIC_MAP = str.maketrans(
+	{
+		"Ä": "AE",
+		"Ö": "OE",
+		"Ü": "UE",
+		"É": "E",
+		"È": "E",
+		"Ë": "E",
+	}
+)
+
+
 def _get_words() -> Iterator[str]:
 	words = _download_wordlist()
 
@@ -35,6 +47,9 @@ def _get_words() -> Iterator[str]:
 		word = unicodedata.normalize("NFC", line.strip()).upper()
 		if word:
 			yield word
+
+			if any(c in word for c in "ÄÖÜÉÈË"):
+				yield word.upper().translate(DIACRITIC_MAP)
 
 
 _wordlist_directory = config.wordlist_directory
@@ -50,7 +65,7 @@ def get_words_of_length(length: int) -> list[str]:
 		with wordlist.open() as f:
 			return list(f)
 
-	result = [word for word in _get_words() if len(word) == length]
+	result = sorted({word for word in _get_words() if len(word) == length})
 	with wordlist.open("w") as f:
 		f.write("\n".join(result))
 
